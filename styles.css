@@ -1,0 +1,1048 @@
+/**
+ * styles.css
+ * 
+ * Main stylesheet for the OSI Model Layers 4 & 5 educational website.
+ * Implements light and dark themes with localStorage persistence.
+ * Uses modern CSS (custom properties, flexbox, grid) with no frameworks.
+ * Fully responsive and accessible.
+ */
+
+/* ==================== CSS Custom Properties (Variables) ==================== */
+
+:root {
+    /* Baseline grid for consistent spacing (all multiples of 0.5rem) */
+    --baseline: 0.5rem;
+    
+    /* Light theme colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --text-color: #1a1a1a;
+    --text-muted: #666666;
+    --border-color: #e0e0e0;
+    --color-accent: #3498db;
+    --color-accent-dark: #2980b9;
+    --color-success: #27ae60;
+    --color-warning: #f39c12;
+    --color-danger: #e74c3c;
+    --color-link: #2980b9;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+    /* Typography scale */
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    --font-family-mono: 'Courier New', 'Lucida Console', monospace;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 36px;
+
+    /* Spacing scale (8px base) */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+
+    /* Transition and animation */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 250ms ease-in-out;
+    --transition-slow: 350ms ease-in-out;
+}
+
+/* Dark theme overrides */
+html.dark-mode {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --border-color: #404040;
+    --color-accent: #5dade2;
+    --color-accent-dark: #3498db;
+    --color-success: #2ecc71;
+    --color-warning: #f39c12;
+    --color-danger: #e74c3c;
+    --color-link: #5dade2;
+}
+
+/* ==================== Global Styles ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-primary);
+    transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+/* ==================== Accessibility ==================== */
+
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    z-index: 999;
+    padding: var(--spacing-md);
+    background-color: var(--color-accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.skip-link:focus {
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Focus outlines for keyboard navigation */
+:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* ==================== Header & Navigation ==================== */
+
+.header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+}
+
+.header-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.header-nav {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.nav-link {
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color var(--transition-fast);
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: var(--bg-primary);
+}
+
+.nav-link.active {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    background: none;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 4px;
+    font-size: var(--font-size-lg);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--color-accent);
+}
+
+.theme-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+}
+
+/* ==================== Main Content ==================== */
+
+.main-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    min-height: calc(100vh - 200px);
+}
+
+/* ==================== Sections and Headings ==================== */
+
+/* ==================== Baseline Grid Spacing Adjustments ==================== */
+/* Modified per user request: flip-chip & spacing improvements */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: calc(var(--baseline) * 1);
+    margin-top: calc(var(--baseline) * 3);
+}
+
+h1 {
+    margin-top: calc(var(--baseline) * 4);
+}
+
+h2 {
+    margin-top: calc(var(--baseline) * 3);
+}
+
+h3 {
+    margin-top: calc(var(--baseline) * 2.5);
+}
+
+p {
+    margin-bottom: calc(var(--baseline) * 1.5);
+    line-height: 1.65;
+}
+
+.content-section {
+    margin-bottom: calc(var(--baseline) * 4);
+    padding-bottom: calc(var(--baseline) * 2);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content-section:last-child {
+    border-bottom: none;
+}
+
+.section-heading {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-top: calc(var(--baseline) * 3);
+    margin-bottom: calc(var(--baseline) * 2);
+    color: var(--color-accent);
+}
+
+.diagram-section {
+    margin: calc(var(--baseline) * 4) 0;
+    padding: calc(var(--baseline) * 2);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+/* ==================== Hero Section (Index) ==================== */
+
+.hero {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+    color: white;
+    border-radius: 8px;
+}
+
+.hero-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: var(--font-size-lg);
+    opacity: 0.95;
+}
+
+/* ==================== Page Title and Breadcrumb ==================== */
+
+.page-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+}
+
+.breadcrumb {
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.breadcrumb a {
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* ==================== Content Sections ==================== */
+
+.content-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-heading {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent);
+}
+
+.overview {
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent);
+}
+
+.overview-content p {
+    margin-bottom: var(--spacing-md);
+}
+
+.overview-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==================== Card Layout ==================== */
+
+.layer-cards {
+    margin: var(--spacing-2xl) 0;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.layer-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.layer-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.layer-card:focus-within {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+}
+
+.card-number {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-description {
+    color: var(--text-muted);
+    flex-grow: 1;
+}
+
+/* ==================== Instructions & Info Panels ==================== */
+
+.instruction-panel {
+    background-color: var(--bg-secondary);
+    border-left: 4px solid var(--color-accent);
+    padding: var(--spacing-lg);
+    border-radius: 4px;
+    margin-bottom: var(--spacing-xl);
+}
+
+.instruction-panel p {
+    margin-bottom: var(--spacing-md);
+}
+
+.instruction-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.instruction-panel strong {
+    color: var(--color-accent);
+}
+
+.keyboard-info {
+    margin-bottom: var(--spacing-xl);
+}
+
+.shortcuts-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.shortcuts-list li {
+    padding: var(--spacing-md);
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background-color: var(--color-accent);
+    color: white;
+    border-radius: 3px;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-right: var(--spacing-xs);
+}
+
+/* ==================== Code Blocks ==================== */
+
+.code-block {
+    background-color: var(--bg-secondary);
+    border-left: 4px solid var(--color-accent);
+    padding: var(--spacing-lg);
+    border-radius: 4px;
+    margin: var(--spacing-lg) 0;
+    overflow-x: auto;
+}
+
+.code-block code {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+pre {
+    margin: 0;
+}
+
+/* ==================== Diagrams ==================== */
+
+.diagram-section {
+    margin: var(--spacing-2xl) 0;
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.diagram-caption {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
+    font-style: italic;
+}
+
+/* ==================== SVG Responsive Padding Helper ==================== */
+/* Modified per user request: flip-chip & spacing improvements */
+
+.svg-responsive {
+    max-width: 100%;
+    height: auto;
+    padding: calc(var(--baseline) * 2.5);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.responsive-svg {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+/* ==================== Cipher Message Summary ==================== */
+
+.cipher-message-summary {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent);
+    margin: var(--spacing-2xl) 0 var(--spacing-xl);
+}
+
+.cipher-message-summary h3 {
+    color: var(--color-accent);
+    margin-top: 0;
+}
+
+.cipher-message-summary strong {
+    color: var(--color-accent);
+}
+
+/* ==================== Baconian Puzzle Styles ==================== */
+
+.puzzle-section {
+    margin: calc(var(--baseline) * 4) 0;
+}
+
+.puzzle-container {
+    background-color: var(--bg-secondary);
+    padding: calc(var(--baseline) * 2.5);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.puzzle-title {
+    font-size: var(--font-size-xl);
+    color: var(--color-accent);
+    margin-top: 0;
+    margin-bottom: calc(var(--baseline) * 1.5);
+    font-weight: 600;
+}
+
+.puzzle-explanation {
+    background-color: var(--bg-primary);
+    padding: calc(var(--baseline) * 1.5);
+    border-radius: 4px;
+    margin-bottom: calc(var(--baseline) * 2);
+    font-size: var(--font-size-sm);
+}
+
+.puzzle-explanation p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.puzzle-explanation strong {
+    color: var(--color-accent);
+}
+
+/* ==================== Baconian Chip Flip Styles — do not remove ==================== */
+
+.cipher-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--baseline) * 2);
+    margin: calc(var(--baseline) * 2) 0;
+    padding: calc(var(--baseline) * 2);
+    background-color: var(--bg-primary);
+    border-radius: 4px;
+    justify-content: center;
+}
+
+/* Flip-card container with 3D perspective */
+.chip-card {
+    width: 80px;
+    height: 60px;
+    perspective: 1000px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    /* Modified per user request: flip-chip & spacing improvements */
+}
+
+.chip-card:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+}
+
+.chip-card:hover .chip-inner {
+    box-shadow: var(--shadow-md);
+}
+
+/* Inner container for 3D flip effect */
+.chip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Flip the inner container when revealed */
+.chip-card.revealed .chip-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front face (A/B group) */
+.chip-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-family: var(--font-family-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-color);
+    backface-visibility: hidden;
+}
+
+/* Back face (decoded letter) */
+.chip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-accent-dark);
+    border-radius: 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+
+/* Hover state for front face */
+.chip-card:not(.revealed) .chip-front:hover {
+    border-color: var(--color-accent);
+    background-color: var(--bg-secondary);
+}
+
+/* Reduced motion support — use fade instead of 3D flip */
+@media (prefers-reduced-motion: reduce) {
+    .chip-inner {
+        transition: opacity 200ms ease-in-out;
+        transform-style: initial;
+    }
+
+    .chip-card.revealed .chip-inner {
+        transform: none;
+    }
+
+    .chip-front {
+        backface-visibility: initial;
+    }
+
+    .chip-front,
+    .chip-back {
+        position: static;
+    }
+
+    .chip-front {
+        opacity: 1;
+    }
+
+    .chip-back {
+        opacity: 0;
+        position: absolute;
+        transform: none;
+    }
+
+    .chip-card.revealed .chip-front {
+        opacity: 0;
+    }
+
+    .chip-card.revealed .chip-back {
+        opacity: 1;
+    }
+}
+
+/* ==================== Buttons ==================== */
+
+.btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: 4px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+}
+
+.btn:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.btn-reveal,
+.btn-check {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+.btn-reveal:hover,
+.btn-check:hover {
+    background-color: var(--color-accent-dark);
+}
+
+.btn-reveal:active,
+.btn-check:active {
+    transform: scale(0.98);
+}
+
+.btn-hint {
+    background-color: var(--color-warning);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+}
+
+.btn-hint:hover {
+    background-color: #e67e22;
+}
+
+/* ==================== Puzzle Controls ==================== */
+
+.puzzle-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: calc(var(--baseline) * 2) 0;
+    flex-wrap: wrap;
+}
+
+/* ==================== Mapping Legend ==================== */
+
+.mapping-legend {
+    background-color: var(--bg-primary);
+    padding: var(--spacing-lg);
+    border-radius: 4px;
+    margin: var(--spacing-lg) 0;
+    border: 1px solid var(--border-color);
+}
+
+.mapping-legend h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent);
+}
+
+.mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.mapping-table thead {
+    background-color: var(--bg-secondary);
+}
+
+.mapping-table th,
+.mapping-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    border: 1px solid var(--border-color);
+    font-family: var(--font-family-mono);
+}
+
+.mapping-table th {
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.mapping-table tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+/* ==================== Guess Input Section ==================== */
+
+.guess-section {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    background-color: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.guess-label {
+    font-weight: 600;
+    display: block;
+}
+
+.guess-input {
+    flex: 1;
+    min-width: 150px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    font-size: var(--font-size-base);
+    font-family: var(--font-family-base);
+    background-color: var(--bg-primary);
+    color: var(--text-color);
+    transition: border-color var(--transition-fast);
+}
+
+.guess-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.guess-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* ==================== Feedback Area ==================== */
+
+.feedback-area {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    font-weight: 500;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.feedback-area.hidden {
+    display: none;
+}
+
+.feedback-area.success {
+    background-color: rgba(39, 174, 96, 0.1);
+    border: 2px solid var(--color-success);
+    color: var(--color-success);
+}
+
+.feedback-area.error {
+    background-color: rgba(231, 76, 60, 0.1);
+    border: 2px solid var(--color-danger);
+    color: var(--color-danger);
+}
+
+/* ==================== Footer ==================== */
+
+.footer {
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    margin-top: calc(var(--baseline) * 8);
+    padding: calc(var(--baseline) * 4) var(--spacing-lg);
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin: calc(var(--baseline) * 1) 0;
+}
+
+.footer-copyright {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin: calc(var(--baseline) * 1) 0;
+}
+
+/* ==================== Links ==================== */
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ==================== Responsive Design ==================== */
+
+@media (max-width: 768px) {
+    :root {
+        --font-size-3xl: 28px;
+        --font-size-2xl: 24px;
+    }
+
+    .header-container {
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+
+    .header-title {
+        flex-basis: 100%;
+        text-align: center;
+    }
+
+    .header-nav {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .theme-toggle {
+        order: 2;
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cipher-chips {
+        justify-content: center;
+    }
+
+    .guess-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .guess-input,
+    .btn {
+        width: 100%;
+    }
+
+    .mapping-table {
+        font-size: var(--font-size-xs);
+    }
+
+    .mapping-table th,
+    .mapping-table td {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .shortcuts-list {
+        grid-template-columns: 1fr;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        @keyframes chipReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --font-size-2xl: 20px;
+        --font-size-xl: 18px;
+        --spacing-2xl: 32px;
+        --spacing-xl: 20px;
+        --spacing-lg: 16px;
+    }
+
+    .main-content {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .hero {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .hero-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .chip {
+        min-width: 60px;
+        min-height: 45px;
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-sm);
+    }
+}
+
+/* ==================== Print Styles ==================== */
+
+@media print {
+    .header,
+    .footer,
+    .theme-toggle,
+    .puzzle-controls,
+    .guess-section,
+    .feedback-area {
+        display: none;
+    }
+
+    body {
+        color: black;
+        background-color: white;
+    }
+
+    .cipher-chips {
+        display: none;
+    }
+}

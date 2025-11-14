@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OSI Layer 5 — Session Layer with interactive Baconian cipher puzzle">
+    <title>Layer 5 — Session | OSI Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip to main content link -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-container">
+            <h1 class="header-title">OSI Model</h1>
+            <nav class="header-nav" role="navigation" aria-label="Main navigation">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="layer4.html" class="nav-link">Layer 4</a>
+                <a href="layer5.html" class="nav-link active">Layer 5</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Press 'd' to toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main" class="main-content">
+        <article role="main">
+            <!-- Page title -->
+            <h2 class="page-title">Layer 5 — Session (Detailed)</h2>
+            <div class="breadcrumb" aria-label="Breadcrumb">
+                <a href="index.html">Home</a> &gt; <span>Layer 5 — Session</span>
+            </div>
+
+            <!-- Detailed Content Sections -->
+            <section class="content-section" role="region" aria-label="Session layer responsibilities">
+                <h3>Responsibilities and Primary Functions</h3>
+                <p>
+                    The session layer (Layer 5) manages dialog control between two systems. Its responsibilities include establishing, maintaining, and terminating sessions, providing synchronization points (checkpoints) within an ongoing session, and coordinating full- or half-duplex communication flows when required.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Session layer tasks">
+                <h3>Typical Session Tasks</h3>
+                <p>
+                    Typical session tasks include starting a session, optionally negotiating session parameters, inserting checkpoints to support recovery, and closing the session. In practice, session-layer services are often implemented within application protocols or middleware (for example, RPC frameworks, SIP call control, or application-level session managers), but understanding the conceptual role of the session layer clarifies how connection and state lifecycles are organized.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Session layer analogy">
+                <h3>A Helpful Analogy</h3>
+                <p>
+                    An analogy: the session layer is like a moderator for a conversation — it opens the conversation, permits pauses, resumes, and finally closes the conversation; it can also record checkpoints so that if the conversation is interrupted, it resumes in a consistent place. This is useful in long-running interactions or where partial state must be preserved across interruptions. Just as a moderator ensures order and continuity in a discussion, the session layer ensures order and continuity in a logical conversation between applications.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Session examples">
+                <h3>Session Examples and Concepts</h3>
+                <p>
+                    Session concepts appear in many real-world scenarios. RPC (Remote Procedure Call) sessions allow a client to invoke procedures on a remote server and expect a response within a session context. SIP (Session Initiation Protocol) call sessions manage the lifecycle of multimedia calls. HTTP-based web sessions use cookies and tokens to maintain state across multiple requests. Database sessions maintain connection pools and transaction contexts. Login sessions authenticate users and maintain their authenticated state across multiple interactions. In all these cases, the session layer (or a session-like abstraction) provides the glue that maintains logical continuity despite the underlying transport being potentially connectionless or unreliable.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Session layer interactions">
+                <h3>Interaction with Other Layers</h3>
+                <p>
+                    Layer 5 interacts with Layer 4 by relying on transport services (reliable or unreliable) to actually transmit session data. It hands segments or datagrams to the transport layer and expects delivery semantics that align with session needs. Interaction with higher layers (such as presentation and application) means session services often blend with application-level session implementations; the boundaries can be pragmatic rather than absolute in modern stacks. A session might use TCP for reliability (Layer 4), rely on encryption and compression services (Layer 6 — Presentation), and be exposed through application APIs (Layer 7). The session layer coordinates these interactions to present a cohesive dialog to the application.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Session best practices">
+                <h3>Best Practices and Common Pitfalls</h3>
+                <p>
+                    Common considerations for sessions include when to time out a session, how to manage session identifiers, and how to reconcile session-level state with distributed or replicated services. Poor session management can cause resource leaks, unexpected behavior, or security issues (stale sessions left open, replay possibilities). Best practices include setting reasonable timeouts, securely generating session identifiers (avoid predictability), clearing session state on logout, and designing session infrastructure to handle failures gracefully. In modern cloud and distributed environments, session state is often stored in centralized caches (like Redis) rather than on a single server, enabling horizontal scaling and resilience.
+                </p>
+            </section>
+
+            <!-- Session Handshake Diagram -->
+            <section class="diagram-section" role="region" aria-label="Session handshake diagram">
+                <h3>Session Lifecycle: Handshake and Termination</h3>
+                <p class="diagram-caption">
+                    This diagram illustrates the typical lifecycle of a session: establishment, maintenance with keep-alive events, and graceful termination.
+                </p>
+                <!-- Modified per user request: flip-chip & spacing improvements — wrap SVG in responsive container -->
+                <div class="svg-responsive">
+                <svg class="responsive-svg" viewBox="0 0 700 300" aria-label="Session handshake timeline diagram">
+                    <defs>
+                        <style>
+                            .timeline-line { stroke: var(--text-color); stroke-width: 2; }
+                            .timeline-dot { fill: var(--color-accent); stroke: var(--text-color); stroke-width: 2; }
+                            .timeline-label { fill: var(--text-color); font-size: 13px; }
+                            .timeline-actor { fill: var(--text-color); font-size: 12px; font-weight: bold; }
+                            .timeline-event { fill: var(--color-accent); stroke: var(--text-color); stroke-width: 1; }
+                        </style>
+                    </defs>
+                    
+                    <!-- Timeline actors -->
+                    <text class="timeline-actor" x="80" y="30">Client</text>
+                    <text class="timeline-actor" x="580" y="30">Server</text>
+                    
+                    <!-- Vertical lines representing actors -->
+                    <line class="timeline-line" x1="100" y1="40" x2="100" y2="280" stroke-dasharray="5,5" />
+                    <line class="timeline-line" x1="600" y1="40" x2="600" y2="280" />
+                    
+                    <!-- Timeline horizontal axis -->
+                    <line class="timeline-line" x1="100" y1="280" x2="600" y2="280" />
+                    
+                    <!-- Event 1: Open Session -->
+                    <circle class="timeline-dot" cx="100" cy="80" r="6" />
+                    <text class="timeline-label" x="110" y="80" text-anchor="start">Session</text>
+                    <text class="timeline-label" x="110" y="95" text-anchor="start">Open</text>
+                    
+                    <path d="M 100 80 L 600 120" stroke="var(--text-color)" stroke-width="2" fill="none" marker-end="url(#arrowhead-small)" />
+                    <text class="timeline-label" x="340" y="95">SYN / SETUP</text>
+                    
+                    <circle class="timeline-dot" cx="600" cy="120" r="6" />
+                    
+                    <!-- Event 2: Keep-Alive -->
+                    <circle class="timeline-dot" cx="100" cy="170" r="6" />
+                    <text class="timeline-label" x="110" y="170" text-anchor="start">Keep</text>
+                    <text class="timeline-label" x="110" y="185" text-anchor="start">Alive</text>
+                    
+                    <path d="M 600 140 L 100 170" stroke="var(--text-color)" stroke-width="2" fill="none" marker-end="url(#arrowhead-small)" />
+                    <text class="timeline-label" x="340" y="155">ACK / DATA</text>
+                    
+                    <!-- Event 3: Close Session -->
+                    <circle class="timeline-dot" cx="600" cy="220" r="6" />
+                    <text class="timeline-label" x="610" y="220" text-anchor="start">Session</text>
+                    <text class="timeline-label" x="610" y="235" text-anchor="start">Close</text>
+                    
+                    <path d="M 100 170 L 600 220" stroke="var(--text-color)" stroke-width="2" fill="none" marker-end="url(#arrowhead-small)" />
+                    <text class="timeline-label" x="340" y="200">FIN / CLOSE</text>
+                    
+                    <!-- Legend -->
+                    <text class="timeline-label" x="50" y="260" font-weight="bold">Timeline: Session management over time</text>
+                    
+                    <defs>
+                        <marker id="arrowhead-small" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="var(--text-color)" />
+                        </marker>
+                    </defs>
+                </svg>
+                </div>
+            </section>
+
+            <!-- Baconian Cipher Message Summary -->
+            <section class="cipher-message-summary" role="region" aria-label="Cipher message summary">
+                <h3>Baconian Cipher Message</h3>
+                <p>
+                    The cipher puzzle on this page encodes a single word that represents a fundamental concept of the Session Layer: the ability to manage and maintain ongoing <strong>sessions</strong> between two communicating entities. Decode the puzzle below to confirm the word!
+                </p>
+            </section>
+
+            <!-- Baconian Cipher Puzzle -->
+            <section class="puzzle-section" role="region" aria-label="Baconian cipher puzzle">
+                <div class="puzzle-container">
+                    <h3 class="puzzle-title">Baconian Puzzle: Session Layer Message</h3>
+                    
+                    <div class="puzzle-explanation">
+                        <p>
+                            This site uses a 5-bit Baconian variant where <strong>A = 0</strong> and <strong>B = 1</strong>. Five A/B characters encode one letter of the alphabet. Click each group to reveal the letter it represents, or use "Reveal all" to decode the entire message at once.
+                        </p>
+                    </div>
+
+                    <!-- Cipher Chips — Flip-card structure -->
+                    <!-- Modified per user request: flip-chip & spacing improvements -->
+                    <div class="cipher-chips" id="layer5Chips" role="group" aria-label="Cipher puzzle chips">
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group BAABA" data-group="BAABA">
+                            <span class="chip-inner">
+                                <span class="chip-front">BAABA</span>
+                                <span class="chip-back" aria-hidden="true">S</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group AABAA" data-group="AABAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">AABAA</span>
+                                <span class="chip-back" aria-hidden="true">E</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group BAABA" data-group="BAABA">
+                            <span class="chip-inner">
+                                <span class="chip-front">BAABA</span>
+                                <span class="chip-back" aria-hidden="true">S</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group BAABA" data-group="BAABA">
+                            <span class="chip-inner">
+                                <span class="chip-front">BAABA</span>
+                                <span class="chip-back" aria-hidden="true">S</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABAAA" data-group="ABAAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABAAA</span>
+                                <span class="chip-back" aria-hidden="true">I</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABBBA" data-group="ABBBA">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABBBA</span>
+                                <span class="chip-back" aria-hidden="true">O</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABBAB" data-group="ABBAB">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABBAB</span>
+                                <span class="chip-back" aria-hidden="true">N</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Reveal All Button -->
+                    <div class="puzzle-controls">
+                        <button class="btn btn-reveal" id="layer5RevealAll" aria-label="Reveal all cipher letters">
+                            Reveal All
+                        </button>
+                    </div>
+
+                    <!-- Mapping Legend -->
+                    <div class="mapping-legend" role="region" aria-label="5-bit to letter mapping legend">
+                        <h4>Binary to Letter Mapping</h4>
+                        <table class="mapping-table">
+                            <thead>
+                                <tr>
+                                    <th>Binary</th>
+                                    <th>A/B Encoding</th>
+                                    <th>Letter</th>
+                                    <th colspan="2">Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>00000</td>
+                                    <td>AAAAA</td>
+                                    <td>A</td>
+                                    <td>00001</td>
+                                    <td>AAAAB = B</td>
+                                </tr>
+                                <tr>
+                                    <td>01000</td>
+                                    <td>ABAAA</td>
+                                    <td>I</td>
+                                    <td>10010</td>
+                                    <td>BAABA = S</td>
+                                </tr>
+                                <tr>
+                                    <td>01110</td>
+                                    <td>ABBBA</td>
+                                    <td>O</td>
+                                    <td>11001</td>
+                                    <td>BBABA = Z</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Guess Input Section -->
+                    <div class="guess-section">
+                        <label for="layer5Guess" class="guess-label">Try your guess:</label>
+                        <input 
+                            type="text" 
+                            id="layer5Guess" 
+                            class="guess-input" 
+                            placeholder="Type the decoded word here" 
+                            aria-label="Text input for decoding guess"
+                        />
+                        <button class="btn btn-check" id="layer5CheckGuess" aria-label="Check your decoding guess">
+                            Check Guess
+                        </button>
+                        <button class="btn btn-hint" id="layer5Hint" aria-label="Show hint" style="display: none;">
+                            Hint
+                        </button>
+                    </div>
+
+                    <!-- Feedback Area -->
+                    <div class="feedback-area" id="layer5Feedback" role="alert" aria-live="polite"></div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <!-- Modified per user request: flip-chip & spacing improvements -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <p class="footer-copyright">
+                © Kaiden Montanez-Juarez. Made for Cybersecurity II.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="baconian.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize Layer 5 puzzle
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePuzzle('layer5', 'SESSION');
+        });
+    </script>
+</body>
+</html>

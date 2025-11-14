@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OSI Layer 4 — Transport Layer with interactive Baconian cipher puzzle">
+    <title>Layer 4 — Transport | OSI Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip to main content link -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-container">
+            <h1 class="header-title">OSI Model</h1>
+            <nav class="header-nav" role="navigation" aria-label="Main navigation">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="layer4.html" class="nav-link active">Layer 4</a>
+                <a href="layer5.html" class="nav-link">Layer 5</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Press 'd' to toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main" class="main-content">
+        <article role="main">
+            <!-- Page title -->
+            <h2 class="page-title">Layer 4 — Transport (Detailed)</h2>
+            <div class="breadcrumb" aria-label="Breadcrumb">
+                <a href="index.html">Home</a> &gt; <span>Layer 4 — Transport</span>
+            </div>
+
+            <!-- Detailed Content Sections -->
+            <section class="content-section" role="region" aria-label="Transport layer responsibilities">
+                <h3>Responsibilities and Primary Functions</h3>
+                <p>
+                    Transport layer (Layer 4) is responsible for end-to-end communication between hosts. Its primary goals are to provide logical communication between applications running on different devices, performing segmentation and reassembly of data streams so the data fits into the network layer's constraints, and ensuring that this data reaches the intended application process via port numbers.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Transport layer services">
+                <h3>Key Services</h3>
+                <p>
+                    Key services provided by the transport layer include reliability, flow control, error detection, and multiplexing. Reliability is provided by mechanisms such as acknowledgements and retransmissions — most notably implemented by TCP. Flow control prevents a fast sender from overwhelming a slow receiver, while multiplexing allows multiple application processes to share a single network device through the use of port identifiers.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Transport protocols">
+                <h3>Common Protocols: TCP and UDP</h3>
+                <p>
+                    Common protocols at this layer are TCP and UDP. TCP is connection-oriented and provides a reliable, ordered byte stream. It performs handshakes, sequence numbering, acknowledgements, and retransmissions. UDP is connectionless and provides minimal transport features — it is useful for low-latency or time-sensitive data where occasional loss is acceptable (e.g., real-time audio/video, DNS queries).
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Transport layer analogy">
+                <h3>A Helpful Analogy</h3>
+                <p>
+                    Think of the transport layer as the postal service that either guarantees delivery (registered insured package with tracking — TCP) or sends quick postcards that might not be tracked (UDP). In networking contexts, the choice between TCP and UDP is a tradeoff between guaranteed delivery and latency/overhead. When you need to ensure every piece of email arrives intact, you choose TCP; when you're streaming live audio and a few dropped packets won't ruin the experience, UDP is the right pick.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Ports and sockets">
+                <h3>Ports, Sockets, and Multiplexing</h3>
+                <p>
+                    In practical terms, ports (for example, port 80 for HTTP) let the transport layer direct incoming data to the correct application process on a host. A socket typically pairs an IP address and a port (and often a protocol) to uniquely identify an endpoint. Below is a simplified illustration of how this works:
+                </p>
+                <pre class="code-block"><code>
+Host A                          Host B
+┌─────────────────┐            ┌─────────────────┐
+│ Application     │            │ Application     │
+│ Process 1       │            │ Process 1 (PID) │
+│ Port: 54321     │─ TCP/UDP ─▶│ Port: 80        │
+└─────────────────┘            │ Socket: 192.168 │
+                               │       .1.100:80 │
+Host B Socket Identifier:      └─────────────────┘
+  {IP: 192.168.1.100, Port: 80, Protocol: TCP}
+
+The transport layer uses these identifiers to route incoming
+packets to the correct application without confusion.
+                </code></pre>
+                <p>
+                    This multiplexing capability is crucial — it allows a single physical network interface to handle traffic from dozens or hundreds of concurrent application processes, each identified by its own port number.
+                </p>
+            </section>
+
+            <section class="content-section" role="region" aria-label="Transport security">
+                <h3>Transport-Layer Security</h3>
+                <p>
+                    Transport-layer security is commonly implemented as a separate layer — for example, TLS typically rides on top of TCP — but the transport layer's behavior (retransmits, ordering) affects how secure protocols perform. Security considerations at the transport layer include how connection state is managed, how retransmissions can be exploited (e.g., TCP spoofing), and how transport characteristics (such as allowing retransmission or not) influence the design of higher-layer security controls.
+                </p>
+                <p>
+                    When designing robust systems, understanding how transport behavior impacts latency, throughput, and reliability is essential. The transport layer is the bridge between the unreliable lower layers and the requirements of applications above — getting it right ensures both performance and resilience.
+                </p>
+            </section>
+
+            <!-- Segmentation Diagram -->
+            <section class="diagram-section" role="region" aria-label="Segmentation diagram">
+                <h3>Segmentation and Transport Headers</h3>
+                <p class="diagram-caption">
+                    This diagram shows how the transport layer segments application data and adds transport headers before passing it to the network layer.
+                </p>
+                <!-- Modified per user request: flip-chip & spacing improvements — wrap SVG in responsive container -->
+                <div class="svg-responsive">
+                <svg class="responsive-svg" viewBox="0 0 600 300" aria-label="Transport segmentation process diagram">
+                    <defs>
+                        <style>
+                            .diagram-box { fill: var(--color-accent); stroke: var(--text-color); stroke-width: 2; }
+                            .diagram-text { fill: var(--text-color); font-size: 14px; text-anchor: middle; }
+                            .diagram-label { fill: var(--text-color); font-size: 12px; text-anchor: middle; }
+                            .diagram-arrow { stroke: var(--text-color); stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+                        </style>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="var(--text-color)" />
+                        </marker>
+                    </defs>
+                    
+                    <!-- Left: Application Data -->
+                    <rect class="diagram-box" x="20" y="20" width="120" height="80" />
+                    <text class="diagram-text" x="80" y="65">Application</text>
+                    <text class="diagram-text" x="80" y="80">Data</text>
+                    
+                    <!-- Arrow down -->
+                    <path class="diagram-arrow" d="M 80 100 L 80 140" />
+                    <text class="diagram-label" x="80" y="125">Segment</text>
+                    
+                    <!-- Middle: Transport Layer Processing -->
+                    <rect class="diagram-box" x="20" y="140" width="120" height="30" />
+                    <text class="diagram-text" x="80" y="160">Transport</text>
+                    
+                    <!-- Arrow right -->
+                    <path class="diagram-arrow" d="M 140 155 L="220" y="155" />
+                    
+                    <!-- Right: Segmented with Headers -->
+                    <g>
+                        <rect class="diagram-box" x="250" y="130" width="80" height="25" fill="var(--color-warning)" />
+                        <text class="diagram-label" x="290" y="148">TCP/UDP</text>
+                        <text class="diagram-label" x="290" y="162">Header</text>
+                        
+                        <rect class="diagram-box" x="250" y="155" width="80" height="50" />
+                        <text class="diagram-text" x="290" y="185">Data</text>
+                        
+                        <text class="diagram-label" x="290" y="220">Segment 1</text>
+                    </g>
+                    
+                    <!-- Multiple segments indicator -->
+                    <g>
+                        <rect class="diagram-box" x="250" y="235" width="80" height="25" fill="var(--color-warning)" />
+                        <text class="diagram-label" x="290" y="253">TCP/UDP</text>
+                        
+                        <rect class="diagram-box" x="250" y="260" width="80" height="30" />
+                        <text class="diagram-label" x="290" y="280">Data</text>
+                    </g>
+                    
+                    <text class="diagram-label" x="290" y="315">Segment 2, 3, ...</text>
+                    
+                    <!-- Down arrow to network layer -->
+                    <path class="diagram-arrow" d="M 440 155 L 520 155" />
+                    <text class="diagram-label" x="480" y="150">To</text>
+                    <text class="diagram-label" x="480" y="165">Network</text>
+                    <text class="diagram-label" x="480" y="180">Layer</text>
+                </svg>
+                </div>
+            </section>
+
+            <!-- Baconian Cipher Message Summary -->
+            <section class="cipher-message-summary" role="region" aria-label="Cipher message summary">
+                <h3>Baconian Cipher Message</h3>
+                <p>
+                    The cipher puzzle on this page encodes a single word that captures the essence of the Transport Layer's primary strength: its ability to ensure <strong>reliable</strong> delivery of data. Decode the puzzle below to verify the word!
+                </p>
+            </section>
+
+            <!-- Baconian Cipher Puzzle -->
+            <section class="puzzle-section" role="region" aria-label="Baconian cipher puzzle">
+                <div class="puzzle-container">
+                    <h3 class="puzzle-title">Baconian Puzzle: Transport Layer Message</h3>
+                    
+                    <div class="puzzle-explanation">
+                        <p>
+                            This site uses a 5-bit Baconian variant where <strong>A = 0</strong> and <strong>B = 1</strong>. Five A/B characters encode one letter of the alphabet. Click each group to reveal the letter it represents, or use "Reveal all" to decode the entire message at once.
+                        </p>
+                    </div>
+
+                    <!-- Cipher Chips — Flip-card structure -->
+                    <!-- Modified per user request: flip-chip & spacing improvements -->
+                    <div class="cipher-chips" id="layer4Chips" role="group" aria-label="Cipher puzzle chips">
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group BAAAB" data-group="BAAAB">
+                            <span class="chip-inner">
+                                <span class="chip-front">BAAAB</span>
+                                <span class="chip-back" aria-hidden="true">R</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group AABAA" data-group="AABAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">AABAA</span>
+                                <span class="chip-back" aria-hidden="true">E</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABABB" data-group="ABABB">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABABB</span>
+                                <span class="chip-back" aria-hidden="true">L</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABAAA" data-group="ABAAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABAAA</span>
+                                <span class="chip-back" aria-hidden="true">I</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group AAAAA" data-group="AAAAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">AAAAA</span>
+                                <span class="chip-back" aria-hidden="true">A</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group AAAAB" data-group="AAAAB">
+                            <span class="chip-inner">
+                                <span class="chip-front">AAAAB</span>
+                                <span class="chip-back" aria-hidden="true">B</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group ABABB" data-group="ABABB">
+                            <span class="chip-inner">
+                                <span class="chip-front">ABABB</span>
+                                <span class="chip-back" aria-hidden="true">L</span>
+                            </span>
+                        </button>
+                        <button class="chip-card" type="button" aria-pressed="false" aria-label="Decode group AABAA" data-group="AABAA">
+                            <span class="chip-inner">
+                                <span class="chip-front">AABAA</span>
+                                <span class="chip-back" aria-hidden="true">E</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Reveal All Button -->
+                    <div class="puzzle-controls">
+                        <button class="btn btn-reveal" id="layer4RevealAll" aria-label="Reveal all cipher letters">
+                            Reveal All
+                        </button>
+                    </div>
+
+                    <!-- Mapping Legend -->
+                    <div class="mapping-legend" role="region" aria-label="5-bit to letter mapping legend">
+                        <h4>Binary to Letter Mapping</h4>
+                        <table class="mapping-table">
+                            <thead>
+                                <tr>
+                                    <th>Binary</th>
+                                    <th>A/B Encoding</th>
+                                    <th>Letter</th>
+                                    <th colspan="2">Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>00000</td>
+                                    <td>AAAAA</td>
+                                    <td>A</td>
+                                    <td>00001</td>
+                                    <td>AAAAB = B</td>
+                                </tr>
+                                <tr>
+                                    <td>01000</td>
+                                    <td>ABAAA</td>
+                                    <td>I</td>
+                                    <td>10001</td>
+                                    <td>BAAAB = R</td>
+                                </tr>
+                                <tr>
+                                    <td>01110</td>
+                                    <td>ABBBA</td>
+                                    <td>O</td>
+                                    <td>11001</td>
+                                    <td>BBABA = Z</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Guess Input Section -->
+                    <div class="guess-section">
+                        <label for="layer4Guess" class="guess-label">Try your guess:</label>
+                        <input 
+                            type="text" 
+                            id="layer4Guess" 
+                            class="guess-input" 
+                            placeholder="Type the decoded word here" 
+                            aria-label="Text input for decoding guess"
+                        />
+                        <button class="btn btn-check" id="layer4CheckGuess" aria-label="Check your decoding guess">
+                            Check Guess
+                        </button>
+                        <button class="btn btn-hint" id="layer4Hint" aria-label="Show hint" style="display: none;">
+                            Hint
+                        </button>
+                    </div>
+
+                    <!-- Feedback Area -->
+                    <div class="feedback-area" id="layer4Feedback" role="alert" aria-live="polite"></div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <!-- Modified per user request: flip-chip & spacing improvements -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <p class="footer-copyright">
+                © Kaiden Montanez-Juarez. Made for Cybersecurity II.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="baconian.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize Layer 4 puzzle
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePuzzle('layer4', 'RELIABLE');
+        });
+    </script>
+</body>
+</html>
